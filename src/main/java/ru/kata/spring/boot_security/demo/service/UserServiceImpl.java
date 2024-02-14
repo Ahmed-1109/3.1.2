@@ -2,21 +2,28 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.UserDto;
 import ru.kata.spring.boot_security.demo.reposirory.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -32,6 +39,8 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public void saveUser(User user) {
+        final String pass = passwordCode(user.getPassword());
+        user.setPassword(pass);
         userRepository.saveUser(user);
     }
 
@@ -43,8 +52,19 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public void updateUser(User user) {
-        userRepository.updateUser(user);
+    public void updateUser(UserDto userDto) {
+
+        final User updatedUser = userRepository.getById(userDto.getId());
+
+        if (Objects.nonNull(userDto.getPassword())) {
+            final String pass = passwordCode(userDto.getPassword());
+            updatedUser.setPassword(pass);
+        }
+        updatedUser.setAge(userDto.getAge());
+        updatedUser.setName(userDto.getName());
+        updatedUser.setEmail(userDto.getEmail());
+        updatedUser.setRoles(roleService.getRolesByIds(userDto.getRoles()));
+        userRepository.updateUser(updatedUser);
     }
 
     @Override
@@ -60,5 +80,9 @@ public class UserServiceImpl implements UserService{
             throw new UsernameNotFoundException("user not found");
         }
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getAuthorities());
+    }
+
+    public String passwordCode(String pass) {
+        return passwordEncoder.encode(pass);
     }
 }

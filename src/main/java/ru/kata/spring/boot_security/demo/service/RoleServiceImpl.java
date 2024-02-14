@@ -16,10 +16,10 @@ public class RoleServiceImpl implements RoleService{
         this.roleRepository = roleRepository;
     }
 
-  /*  @Override
+    @Override
     public Set<Role> getRolesByIds(List<Long> ids) {
         return roleRepository.getRolesByIds(ids);
-    }*/
+    }
 
     @Override
     public Set<Role> findAll() {

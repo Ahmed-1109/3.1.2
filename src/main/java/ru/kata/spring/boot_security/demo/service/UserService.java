@@ -2,10 +2,11 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.UserDto;
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService  {
+public interface UserService extends UserDetailsService {
 
     List<User> findAll();
 
@@ -15,7 +16,7 @@ public interface UserService extends UserDetailsService  {
 
     void deleteUserById(Long id);
 
-    void updateUser(User user);
+    void updateUser(UserDto userDto);
 
     User findByEmail(String email);
 

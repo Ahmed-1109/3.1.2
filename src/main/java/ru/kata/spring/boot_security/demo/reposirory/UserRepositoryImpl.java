@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.reposirory;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;
 
@@ -16,18 +15,6 @@ public class UserRepositoryImpl implements UserRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final PasswordEncoder passwordEncoder;
-
-    public UserRepositoryImpl(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-
-    public String passwordCode(String pass) {
-
-        return passwordEncoder.encode(pass);
-    }
-
     @Override
     public List<User> findAll() {
         return entityManager.createQuery("SELECT u from User u").getResultList();
@@ -35,13 +22,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getById(Long id) {
+        // все поля без пароля
         return entityManager.find(User.class, id);
     }
 
     @Override
     public void saveUser(User user) {
-        String pass = passwordCode(user.getPassword());
-        user.setPassword(pass);
         entityManager.persist(user);
     }
 
@@ -55,8 +41,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void updateUser(User user) {
-        String pass = passwordCode(user.getPassword());
-        user.setPassword(pass);
         entityManager.merge(user);
 
     }

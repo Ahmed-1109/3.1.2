@@ -16,16 +16,16 @@ public class RoleRepositoryImpl implements RoleRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-   /* @Override
+    @Override
     public Set<Role> getRolesByIds(List<Long> ids) {
-        TypedQuery<Role> query = entityManager.createQuery("SELECT roles FROM Role roles WHERE roles.id=:ids", Role.class)
+        TypedQuery<Role> query = entityManager.createQuery("SELECT roles FROM Role roles WHERE roles.id in :ids", Role.class)
                 .setParameter("ids", ids);
         return new HashSet<>(query.getResultList());
     }
-*/
+
     @Override
     public Set<Role> findAll() {
-        return new HashSet<>(entityManager.createQuery( "SELECT r FROM Role r" ).getResultList());
+        return new HashSet<>(entityManager.createQuery("SELECT r FROM Role r").getResultList());
     }
 
 

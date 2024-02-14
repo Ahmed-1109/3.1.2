@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.UserDto;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -59,14 +60,15 @@ public class AdminController {
     @GetMapping("/admin/edit/{id}")
     public String update(@PathVariable("id") Long id, Model model) {
         Set<Role> roleList = roleService.findAll();
-        model.addAttribute("user", userService.getById(id));
+        final User user = userService.getById(id);
+        model.addAttribute("user", user);
         model.addAttribute("roleList", roleList);
         return "edit";
     }
 
     @PostMapping("/admin/edit")
-    public String updateUser(User user) {
-        userService.updateUser(user);
+    public String updateUser(UserDto userDto) {
+        userService.updateUser(userDto);
         return "redirect:/admin";
     }
 
