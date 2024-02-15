@@ -22,7 +22,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getById(Long id) {
-        // все поля без пароля
         return entityManager.find(User.class, id);
     }
 

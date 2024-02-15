@@ -10,7 +10,6 @@ import ru.kata.spring.boot_security.demo.reposirory.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 
@@ -56,10 +55,10 @@ public class UserServiceImpl implements UserService {
 
         final User updatedUser = userRepository.getById(userDto.getId());
 
-        if (Objects.nonNull(userDto.getPassword())) {
-            final String pass = passwordCode(userDto.getPassword());
-            updatedUser.setPassword(pass);
+        if (!(userRepository.getById(userDto.getId()).getPassword().equals(userDto.getPassword()))) {
+            userDto.setPassword(passwordCode(userDto.getPassword()));
         }
+
         updatedUser.setAge(userDto.getAge());
         updatedUser.setName(userDto.getName());
         updatedUser.setEmail(userDto.getEmail());

@@ -60,7 +60,7 @@ public class AdminController {
     @GetMapping("/admin/edit/{id}")
     public String update(@PathVariable("id") Long id, Model model) {
         Set<Role> roleList = roleService.findAll();
-        final User user = userService.getById(id);
+        User user = userService.getById(id);
         model.addAttribute("user", user);
         model.addAttribute("roleList", roleList);
         return "edit";

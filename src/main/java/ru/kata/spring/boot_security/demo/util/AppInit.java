@@ -1,4 +1,3 @@
-/*
 //package ru.kata.spring.boot_security.demo.util;
 package ru.kata.spring.boot_security.demo.util;
 
@@ -8,11 +7,9 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-import ru.kata.spring.boot_security.demo.service.RoleService;
-import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Component
 public class AppInit implements CommandLineRunner {
@@ -32,18 +29,17 @@ public class AppInit implements CommandLineRunner {
         rs.save(userRole);
         rs.save(adminRole);
 
-        List<Role> roles = new ArrayList<>();
-        List<Role> rolesAdm = new ArrayList<>();
+        Set<Role> roles = new LinkedHashSet<>();
+        Set<Role> rolesAdm = new LinkedHashSet<>();
 
         roles.add(userRole);
         rolesAdm.add(adminRole);
 
-        User user = new User("ahmed",24,"ahmed","adasd",);
-        User admin = new User("kirill", 20, "admin", rolesAdm);
+        User user = new User("ivan", "20", "ivan", "12345", roles);
+        User admin = new User("kirill", "24", "kirill", "admin", rolesAdm);
 
-        us.save(user);
-        us.save(admin);
+        us.saveUser(user);
+        us.saveUser(admin);
     }
 }
 
-*/

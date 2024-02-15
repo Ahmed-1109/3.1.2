@@ -1,19 +1,19 @@
 package ru.kata.spring.boot_security.demo.util;
 
-/*
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Component
 public class UserValidator implements Validator {
-private final UserServiceImpl userService;
 
+    private final UserService userService;
 
-    public UserValidator(UserServiceImpl userService) {
+    @Autowired
+    public UserValidator(UserService userService) {
         this.userService = userService;
     }
 
@@ -24,15 +24,16 @@ private final UserServiceImpl userService;
 
     @Override
     public void validate(Object target, Errors errors) {
-
         User user = (User) target;
+        if (user.getRoles().size() == 0) {
+            errors.rejectValue("name", "", "Выберите хотябы одну роль");
+        }
         try {
             userService.loadUserByUsername(user.getEmail());
-        } catch (UsernameNotFoundException ignored){
-            return;// не забыть создать свой сервис
+        } catch (Exception ignored) {
+            return;
         }
-        errors.rejectValue("username", "", "Человек с таким именем уже существует");
 
+        errors.rejectValue("email", "", "Человек с таким email  существует");
     }
 }
-*/

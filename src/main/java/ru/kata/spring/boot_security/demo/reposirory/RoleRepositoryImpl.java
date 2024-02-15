@@ -17,6 +17,11 @@ public class RoleRepositoryImpl implements RoleRepository {
     private EntityManager entityManager;
 
     @Override
+    public void save(Role role) {
+        entityManager.persist(role);
+    }
+
+    @Override
     public Set<Role> getRolesByIds(List<Long> ids) {
         TypedQuery<Role> query = entityManager.createQuery("SELECT roles FROM Role roles WHERE roles.id in :ids", Role.class)
                 .setParameter("ids", ids);

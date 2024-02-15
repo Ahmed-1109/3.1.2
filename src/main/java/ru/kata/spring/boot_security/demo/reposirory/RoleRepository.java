@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface RoleRepository {
 
+    void save(Role userRole);
+
     Set<Role> getRolesByIds(List<Long> ids);
 
     Set<Role> findAll();
